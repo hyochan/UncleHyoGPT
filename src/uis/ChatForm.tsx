@@ -2,19 +2,58 @@
 
 import { useState, FormEvent, useRef } from "react";
 import { Button, Input } from "@nextui-org/react";
-import { CommentIcon, HubotIcon } from "@primer/octicons-react";
+import { CommentIcon } from "@primer/octicons-react";
+import {
+  ChatPromptTemplate,
+  HumanMessagePromptTemplate,
+  MessagesPlaceholder,
+} from "@langchain/core/prompts";
+import { SystemMessage } from "langchain/schema";
+import { ConversationChain } from "langchain/chains";
+import { BufferMemory, ChatMessageHistory } from "langchain/memory";
+import { chatAI } from "../utils/langchain";
+
+const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+  new MessagesPlaceholder("history"),
+  HumanMessagePromptTemplate.fromTemplate("{input}"),
+]);
+
+const pastMessages = [
+  new SystemMessage(
+    // eslint-disable-next-line max-len
+    `You are great parent. Please answer to the kids.`
+  ),
+];
 
 export default function ChatForm() {
   const [message, setMessage] = useState("");
   const [results, setResults] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault(); // 페이지 새로고침 방지
-    console.log("Send", message);
-    setMessage("");
-    setResults((prev) => [message, ...prev]);
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
+    // GPT Answer
+    const chain = new ConversationChain({
+      memory: new BufferMemory({
+        returnMessages: true,
+        memoryKey: "history",
+        chatHistory: new ChatMessageHistory(pastMessages),
+        aiPrefix: "Adult",
+        humanPrefix: "Kid",
+      }),
+      prompt: chatPrompt,
+      llm: chatAI,
+    });
+
+    const result = await chain.call({
+      input: message,
+      // signal: newController.signal,
+    });
+
+    // Reset
+    setMessage("");
+    setResults((prev) => [result.response, ...prev]);
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -23,7 +62,7 @@ export default function ChatForm() {
   return (
     <form
       className="self-stretch flex-1 flex flex-col items-center gap-8"
-      onSubmit={onSubmit} // 폼 제출 이벤트에 핸들러 연결
+      onSubmit={onSubmit}
     >
       {/* Body */}
       <div className="flex flex-1 flex-col w-full gap-4">
