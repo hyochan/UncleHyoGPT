@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, FormEvent, useRef, useEffect } from "react";
-import { Button, Chip, Input, Textarea } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { CommentIcon } from "@primer/octicons-react";
 import useSWRMutation from "swr/mutation";
 import { ChatHistory } from "../types";
-import toast, { Toaster } from "react-hot-toast";
 import clsx from "clsx";
 
 const sendMessage = (
@@ -160,7 +159,6 @@ export default function ChatForm() {
           ))}
         </div>
       </div>
-      <Toaster />
     </form>
   );
 }

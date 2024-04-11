@@ -1,9 +1,11 @@
 import ChatForm from "../src/uis/ChatForm";
 import Image from "next/image";
+import Header from "../src/uis/Header";
 
 export default async function Home() {
   return (
     <div className="h-screen flex flex-col">
+      <Header />
       <main className="flex flex-1 self-stretch flex-col py-12 px-24 gap-4">
         <div className="flex flex-row items-center gap-4 self-center mb-4">
           <Image src="/icon.png" alt="App Icon" width={36} height={36} />
