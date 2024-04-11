@@ -1,16 +1,16 @@
-import { OpenAI, ChatOpenAI } from "@langchain/openai";
+import { ChatOpenAI } from "@langchain/openai";
 
-export const openAI = new OpenAI({
+export const chatOpenAI = new ChatOpenAI({
+  temperature: 0.5,
   openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-  configuration: {
-    organization: 'dooboolab'
-  },
-  temperature: 0.9,
-});
-
-export const chatAI = new ChatOpenAI({
-  temperature: 0.9,
-  openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-  modelName: "gpt-3.5-turbo",
+  modelName: "gpt-3.5-turbo-0125",
   // modelName: 'gpt-4',
 });
+
+export function extractErrorMessageFromOutputParserException(message: string): string | undefined {
+  const pattern = /Text: "(.*)". Error:/;
+  const match = message.match(pattern);
+  if (match && match[1]) {
+    return match[1];
+  }
+}

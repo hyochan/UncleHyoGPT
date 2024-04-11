@@ -44,3 +44,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## 2. NextUI Installation
 
 Followed [NextUI Installation Guide](https://nextui.org/docs/frameworks/nextjs).
+
+## 3. Setup your openai api key in env
+
+```sh
+cp .env.sample .env
+```
+
+Get your [openai api key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key) and enter in `.env` file.
+```
+NEXT_PUBLIC_OPENAI_KEY=
+```
