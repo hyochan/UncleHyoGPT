@@ -40,7 +40,7 @@ const prompt = ChatPromptTemplate.fromMessages([
   ],
   [
     "system",
-    `한국어로 물어보면 한국어로 대답해주고 존대말이 아닌 반말로 대답해줘.`,
+    `When asked in English, respond in English. When asked in Korean, respond in Korean and use informal language instead of formal language.`,
   ],
   new MessagesPlaceholder("chat_history"),
   ["human", "{input}"],

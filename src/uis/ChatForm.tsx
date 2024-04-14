@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useRef, useEffect } from "react";
+import { useState, FormEvent, useRef, useEffect, startTransition } from "react";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { CommentIcon } from "@primer/octicons-react";
 import useSWRMutation from "swr/mutation";
@@ -30,21 +30,21 @@ export default function ChatForm() {
   const onSendMessage = async (e: FormEvent) => {
     e.preventDefault();
 
-    const result = await triggerSendMessage(
-      {
-        message,
-        //? Sliding Window - Only keep the last 10 histories
-        histories: histories.slice(0, 10),
-        sysMessage,
-      },
-    );
+    const result = await triggerSendMessage({
+      message,
+      //? Sliding Window - Only keep the last 10 histories
+      histories: histories.slice(0, 10),
+      sysMessage,
+    });
 
     if (message) {
       result.input = message;
     }
 
-    setHistories((prevResults) => [result, ...prevResults]);
-    setMessage("");
+    startTransition(() => {
+      setHistories((prevResults) => [result, ...prevResults]);
+      setMessage("");
+    });
 
     if (inputRef.current) {
       inputRef.current.focus();
