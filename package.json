@@ -9,16 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@langchain/core": "^0.1.52",
-    "@langchain/google-genai": "^0.0.10",
-    "@langchain/openai": "^0.0.24",
+    "@langchain/core": "^0.1.57",
+    "@langchain/google-genai": "^0.0.11",
+    "@langchain/openai": "^0.0.28",
     "@nextui-org/react": "^2.2.10",
     "@primer/octicons-react": "^19.9.0",
     "clsx": "^2.1.0",
     "formidable": "^3.5.1",
-    "framer-motion": "^11.0.22",
-    "langchain": "^0.1.30",
-    "next": "14.1.4",
+    "framer-motion": "^11.0.28",
+    "langchain": "^0.1.33",
+    "next": "14.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
@@ -33,9 +33,9 @@
     "autoprefixer": "^10.4.19",
     "dotenv-cli": "^7.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.1.4",
+    "eslint-config-next": "14.2.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.3",
-    "typescript": "^5.3.0"
+    "typescript": "5.3.3"
   }
 }
