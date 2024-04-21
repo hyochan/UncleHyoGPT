@@ -17,6 +17,7 @@
     "clsx": "^2.1.0",
     "formidable": "^3.5.1",
     "framer-motion": "^11.0.28",
+    "franc": "^6.2.0",
     "langchain": "^0.1.33",
     "next": "14.2.1",
     "react": "^18",

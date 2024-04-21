@@ -16,8 +16,9 @@ import { z } from "zod";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { isSessionCallLimited } from "../../../src/utils/session";
+import { detectLanguage } from "../../../src/utils/common";
 
-export const revalidate = 3; // 3sec
+export const revalidate = 3;
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -38,10 +39,7 @@ const prompt = ChatPromptTemplate.fromMessages([
     {format_instructions}
     {input}`,
   ],
-  [
-    "system",
-    `When asked in English, respond in English. When asked in Korean, respond in Korean and use informal language instead of formal language.`,
-  ],
+  ["system", `Respond ONLY in {language} language.`],
   new MessagesPlaceholder("chat_history"),
   ["human", "{input}"],
 ]);
@@ -62,8 +60,10 @@ export async function POST(request: Request) {
     new HumanMessage("Uncle~~~ Play with me!"),
   ];
 
-  //? Sliding Window - Only keep the last 100 histories
-  req.histories.slice(0, 100).forEach((history: any) => {
+  // Sliding Window - Only keep the last 100 histories
+  const start = Math.max(0, req.histories.length - 100);
+
+  req.histories.slice(start).forEach((history: any) => {
     if (history.input) chatHistories.push(new HumanMessage(history.input));
     chatHistories.push(new AIMessage(history.message));
   });
@@ -89,6 +89,7 @@ export async function POST(request: Request) {
       {
         chat_history: chatHistories,
         input: message,
+        language: detectLanguage(message),
         format_instructions: parser.getFormatInstructions(),
         memory,
       },
