@@ -16,15 +16,9 @@ import { z } from "zod";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { isSessionCallLimited } from "../../../src/utils/session";
-import { franc } from 'franc';
+import { detectLanguage } from "../../../src/utils/common";
 
-function detectLanguage(text: string): string {
-    return franc(text, {minLength: 1}); // ISO639-3 언어 코드 반환
-}
-
-
-
-export const revalidate = 3; // 3sec
+export const revalidate = 3;
 
 const parser = StructuredOutputParser.fromZodSchema(
   z.object({
@@ -45,10 +39,7 @@ const prompt = ChatPromptTemplate.fromMessages([
     {format_instructions}
     {input}`,
   ],
-  [
-    "system",
-    `Respond ONLY in {language} language.`,
-  ],
+  ["system", `Respond ONLY in {language} language.`],
   new MessagesPlaceholder("chat_history"),
   ["human", "{input}"],
 ]);
@@ -70,12 +61,12 @@ export async function POST(request: Request) {
   ];
 
   // Sliding Window - Only keep the last 100 histories
-const start = Math.max(0, req.histories.length - 100); // 올바른 시작 인덱스 계산
-req.histories.slice(start).forEach((history: any) => {
-  if (history.input) chatHistories.push(new HumanMessage(history.input));
-  chatHistories.push(new AIMessage(history.message));
-});
+  const start = Math.max(0, req.histories.length - 100);
 
+  req.histories.slice(start).forEach((history: any) => {
+    if (history.input) chatHistories.push(new HumanMessage(history.input));
+    chatHistories.push(new AIMessage(history.message));
+  });
 
   try {
     const message = req.message;
@@ -92,8 +83,6 @@ req.histories.slice(start).forEach((history: any) => {
       ]),
     });
 
-    console.log("memory:", memory);    
-    
     const chain = RunnableSequence.from([prompt, chatOpenAI, parser]);
 
     const response = await chain.invoke(
