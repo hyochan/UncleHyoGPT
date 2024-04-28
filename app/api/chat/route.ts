@@ -45,14 +45,9 @@ const prompt = ChatPromptTemplate.fromMessages([
   ],
   [
     "system",
-    "Use informal language when speaking in Korean to create a more friendly and relatable conversation.",
-  ],
-  [
-    "system",
     "한국어로 대화할 때는 반말을 사용해. 이렇게 하면 대화가 더 친근하게 느껴질 거야.",
   ],
   ["system", `Respond ONLY in {language} language.`],
-  ["system", `{format_instructions} {input}`],
   new MessagesPlaceholder("chat_history"),
   ["human", "{input}"],
 ]);
