@@ -76,8 +76,6 @@ export async function POST(request: Request) {
     chatHistories.push(new AIMessage(history.message));
   });
 
-  console.log('chathistories', chatHistories.length);
-
   try {
     const message = req.message;
     const sysMessage = req.sysMessage || "";
