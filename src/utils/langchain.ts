@@ -3,7 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 export const chatOpenAI = new ChatOpenAI({
   temperature: 0.5,
   openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_KEY,
-  modelName: "gpt-3.5-turbo-0125",
+  modelName: "gpt-4o",
   // modelName: 'gpt-4',
 });
 
