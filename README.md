@@ -6,4 +6,4 @@
 
 This is an example project utilizing LangChain with GPT, built with [NextJS 14](https://nextjs.org/blog/next-14). It's designed as a chatbot uncle engaging in conversations with nieces and nephews. To get started with the project, you'll need your personal [OpenAI](https://openai.com) key.
 
-Try it in [gpt.hyochan.dev](https://gpt.hyochan.dev).
+Try it in [unclehyo-gpt.dooboolab.com](https://unclehyo-gpt.dooboolab.com).

@@ -25,7 +25,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "gpt.hyochan.dev",
+        hostname: "unclehyo-gpt.dooboolab.com",
         port: "",
         pathname: "/**",
       },
